@@ -19,7 +19,7 @@ All logging is copied to the root of each hosts evidence folder. The logs includ
 ![image](https://user-images.githubusercontent.com/77779774/150186998-c77e23ba-b190-457d-b53a-16131f532b08.png)
 
 ## How to Use
-Place IRCP scripts in the root of a directory containing Kape & Arsenal.
+Place IRCP scripts in the root of a directory containing Kape & Arsenal and name the folders like the screenshots below. 
 
 Arsenal DL Link - https://arsenalrecon.com/downloads/
 
