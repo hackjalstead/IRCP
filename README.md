@@ -8,9 +8,9 @@ IRCP supports E01, VMDK, VHD, VHDX images & Live hosts.
 
 IRCP includes lab single image, lab multi-image, Live host & Bootable versions.
 
-Each script contains built-in automation to mount/dismount of images, detect OS parition, detect OS type, create Evidence folders & execute Kape with parsers id'd wth OS detection.
+Each script contains built-in automation to mount/dismount of images, detect OS parition, detect OS type, create Evidence folders & execute Kape with parsers id'd wth OS detection. A full breakdown of each scripts features can be found below.
 
-IRCP has customizable Kape parser variables which Responders can change to suit varied investigational needs. A full breakdown of each scripts features can be found below. 
+IRCP has customizable Kape parser variables which Responders can change to suit varied investigational needs.  
 
 All logging is copied to the root of each hosts evidence folder. The logs include IRCP console log, Kape Modules/Targets log & Target System Information containing IP, domain, OS, users, timezone etc. taken with RECmd. 
 
