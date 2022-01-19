@@ -21,9 +21,9 @@ Place IRCP scripts in the root of a directory containing Kape & Arsenal.
 
 Arsenal DL Link - https://arsenalrecon.com/downloads/
 
-Ensure there is enough space as this is where the Evidence will be placed in the Single, Multi & Live versions.
+Ensure there is enough storage in the location you are running it from as all artefacts will be placed in .\Evidence for the Single, Multi & Live versions.
 
-Bootable version will prompt user for destination harvest drive
+The Bootable version will prompt user for destination harvest drive.
 
 ![image](https://user-images.githubusercontent.com/77779774/150188642-36a8e4b3-87ac-49b2-b45d-de3dd5a07e23.png)
 
