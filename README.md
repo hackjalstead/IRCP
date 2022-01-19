@@ -70,7 +70,7 @@ For artefact collection of a Live host.
 -  Kape executes with endpoint id'd specific parsers
 -  All logging copied to host folder root
 
-## IRCP-Boot
+## IRCP-Bootable
 
 For artefact collection of hosts booted into WinPE/WinFE. 
 
