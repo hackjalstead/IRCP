@@ -12,11 +12,11 @@ Each script contains built-in automation to mount/dismount of images, detect OS 
 
 IRCP has customizable Kape parser variables which Responders can change to suit varied investigational needs.  
 
-All logging is copied to the root of each hosts evidence folder. The logs include IRCP console log, Kape Modules/Targets log & Target System Information containing IP, domain, OS, users, timezone etc. taken with RECmd. 
+All logging is copied to the root of each hosts evidence folder. The logs include IRCP console log, Kape Modules/Targets log & Target System Information containing IP, domain, OS, users, timezone etc. taken with RECmd.
 
 ## IRCP Interface 
 
-![image](https://user-images.githubusercontent.com/77779774/150186998-c77e23ba-b190-457d-b53a-16131f532b08.png)
+![ircp](https://user-images.githubusercontent.com/77779774/150213330-c068ce63-2d1b-4522-8c64-8e493bba66ec.gif)
 
 ## How to Use
 Place IRCP scripts in the root of a directory containing Kape & Arsenal and name the folders like the screenshots below. 
