@@ -29,7 +29,9 @@ The Bootable version will prompt user for destination harvest drive.
 
 ![image](https://user-images.githubusercontent.com/77779774/150188642-36a8e4b3-87ac-49b2-b45d-de3dd5a07e23.png)
 
-## Change Kape Parser Variables Here
+## Kape Parser Variables
+
+Change the Kape parser variables at the top of each script to what you require to be collected.
 
 ![image](https://user-images.githubusercontent.com/77779774/150187617-97a5ff9e-75fe-402c-a471-50d50bfaf330.png)
 
