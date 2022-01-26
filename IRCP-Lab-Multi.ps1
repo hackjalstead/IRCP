@@ -10,7 +10,7 @@
 ####################### Kape Targets & Modules ########################
 
                     $kapeTargets = "!SANS_Triage"
-                    $kapeModules = "!EZParser"
+                    $kapeModules = "!EZParser,Chainsaw"
 
 #######################################################################
 
