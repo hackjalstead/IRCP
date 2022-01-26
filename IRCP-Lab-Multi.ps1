@@ -344,9 +344,9 @@ foreach ($vhdx in $vhdxImages)
         Write-Host -ForegroundColor Yellow "============ $OSDriveLetter Dismounted"
         Write-Host ""
         Write-Host -ForegroundColor Yellow "============ Kape Complete on $OSDriveLetter Drive for $($vhdx.basename)"
-        Move-Item -Path .\Evidence\$($vmdk.basename)\Modules\Registry\*_BasicSystemInfo_Output.csv .\Evidence\$($vmdk.basename)\TargetSystemInfo.csv
-        Move-Item -Path .\Evidence\$($vmdk.basename)\Modules\*.txt -Destination .\Evidence\$($vmdk.basename)\kapeModules.log
-        Move-Item -Path .\Evidence\$($vmdk.basename)\Targets\*.txt -Destination .\Evidence\$($vmdk.basename)\kapeTargets.log
+        Move-Item -Path .\Evidence\$($vhdx.basename)\Modules\Registry\*_BasicSystemInfo_Output.csv .\Evidence\$($vhdx.basename)\TargetSystemInfo.csv
+        Move-Item -Path .\Evidence\$($vhdx.basename)\Modules\*.txt -Destination .\Evidence\$($vhdx.basename)\kapeModules.log
+        Move-Item -Path .\Evidence\$($vhdx.basename)\Targets\*.txt -Destination .\Evidence\$($vhdx.basename)\kapeTargets.log
         Start-Sleep -Seconds 5
         break
         }             
