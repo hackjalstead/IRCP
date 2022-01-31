@@ -2,12 +2,12 @@
 
             Incident Response Collection Protocol (IRCP)
                         Single-Image Version
-    ! Edit the Kape parsers below depending on investigational needs!
-    ! For multiple Kape parsers use a comma to seperate the values !
+    ! Edit the KAPE parsers below depending on investigational needs!
+    ! For multiple KAPE parsers use a comma to seperate the values !
 
 #######################################################################>
 
-####################### Kape Targets & Modules ########################
+####################### KAPE Targets & Modules ########################
 
                 $kapeWorkstationTargets = "!SANS_Triage"
                 $kapeServerTargets = "!SANS_Triage,ServerTriage"
@@ -19,15 +19,15 @@
 Start-Transcript .\ircpSingleConsole.log | out-null
 Clear-Host
 $ircp = "@
-                `$`$`$`$`$`$\ `$`$`$`$`$`$`$\   `$`$`$`$`$`$\  `$`$`$`$`$`$`$\  
-                \_`$`$  _|`$`$  __`$`$\ `$`$  __`$`$\ `$`$  __`$`$\ 
+                `$`$`$`$`$`$\ `$`$`$`$`$`$`$\   `$`$`$`$`$`$\  `$`$`$`$`$`$`$\
+                \_`$`$  _|`$`$  __`$`$\ `$`$  __`$`$\ `$`$  __`$`$\
                   `$`$ |  `$`$ |  `$`$ |`$`$ /  \__|`$`$ |  `$`$ |
                   `$`$ |  `$`$`$`$`$`$`$  |`$`$ |      `$`$`$`$`$`$`$  |
-                  `$`$ |  `$`$  __`$`$  `$`$ |      `$`$  ____/ 
-                  `$`$ |  `$`$ |  `$`$ |`$`$ |  `$`$\ `$`$ |      
-                `$`$`$`$`$`$\ `$`$ |  `$`$ |\`$`$`$`$`$`$  |`$`$ |      
-                \______|\__|  \__| \______/ \__|                                 
-@"      
+                  `$`$ |  `$`$  __`$`$  `$`$ |      `$`$  ____/
+                  `$`$ |  `$`$ |  `$`$ |`$`$ |  `$`$\ `$`$ |
+                `$`$`$`$`$`$\ `$`$ |  `$`$ |\`$`$`$`$`$`$  |`$`$ |
+                \______|\__|  \__| \______/ \__|
+@"
 Write-Host $ircp
 Write-Host -ForegroundColor Yellow "============ Incident Response Collection Protocol ============"
 Write-Host ""
@@ -37,7 +37,7 @@ Write-Host -ForegroundColor Yellow "============ Select Image Location to Mount"
 Write-Host ""
 Start-Sleep -Seconds 2
 Add-Type -AssemblyName System.Windows.Forms
-$FileBrowser = New-Object System.Windows.Forms.OpenFileDialog 
+$FileBrowser = New-Object System.Windows.Forms.OpenFileDialog
 $FileBrowser.filter = "All Files (*.*)|*.*|Forensic Images (*.e01)|*.e01|Virtual HDX (*.vhdx)|*.vhdx|Virtual HD (*.vhd)|*.vhd|VMDK (*.vmdk)|*.vmdk"
 [void]$FileBrowser.ShowDialog()
 $image = $FileBrowser.FileName
@@ -61,7 +61,7 @@ if ($extension -Like "*.e01") {
           {
           $DrivesNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk")
           $DriveLetters = Compare-Object -ReferenceObject $Drives -DifferenceObject $DrivesNew | Select-Object -ExpandProperty InputObject | Select-Object -ExpandProperty DeviceId
-                  if (!($null -eq $DriveLetters)) { 
+                  if (!($null -eq $DriveLetters)) {
                   Write-host "New drives mounted $DriveLetters"
                 foreach ($DriveLetter in $DriveLetters) {
                     if (Test-Path "${DriveLetter}\windows\system32") {
@@ -70,7 +70,7 @@ if ($extension -Like "*.e01") {
                     Write-Host -ForegroundColor Yellow "============ E01 Mount Successful" } break } }
 } elseif ($extension -Like "*.vhdx") {
     Write-Host -ForegroundColor Yellow "============ Mounting VHDX Image"
-    Write-Host "" 
+    Write-Host ""
     .\arsenal\aim_cli.exe /mount /readonly /filename=$image /provider=DiscUtils /background
     Start-Sleep -Seconds 5
 :vhdx while($true) {
@@ -79,12 +79,12 @@ if ($extension -Like "*.e01") {
           {
           $DrivesNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk")
           $DriveLetters = Compare-Object -ReferenceObject $Drives -DifferenceObject $DrivesNew | Select-Object -ExpandProperty InputObject | Select-Object -ExpandProperty DeviceId
-                if (!($null -eq $DriveLetters)) { 
+                if (!($null -eq $DriveLetters)) {
                   Write-host "New drives mounted $DriveLetters"
                 foreach ($DriveLetter in $DriveLetters) {
                     if (Test-Path "${DriveLetter}\windows\system32") {
                         Write-Host "Operating System Drive is ${DriveLetter}" } }
-                        Write-Host ""                  
+                        Write-Host ""
                     Write-Host -ForegroundColor Yellow "============ VHDX Mount Successful" } break } }
 } elseif ($extension -Like "*.vhd") {
     Write-Host -ForegroundColor Yellow "============ Mounting VHD Image"
@@ -97,7 +97,7 @@ if ($extension -Like "*.e01") {
           {
           $DrivesNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk")
           $DriveLetters = Compare-Object -ReferenceObject $Drives -DifferenceObject $DrivesNew | Select-Object -ExpandProperty InputObject | Select-Object -ExpandProperty DeviceId
-                if (!($null -eq $DriveLetters)) { 
+                if (!($null -eq $DriveLetters)) {
                   Write-host "New drives mounted $DriveLetters"
                 foreach ($DriveLetter in $DriveLetters) {
                     if (Test-Path "${DriveLetter}\windows\system32") {
@@ -115,7 +115,7 @@ if ($extension -Like "*.e01") {
           {
           $DrivesNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk")
           $DriveLetters = Compare-Object -ReferenceObject $Drives -DifferenceObject $DrivesNew | Select-Object -ExpandProperty InputObject | Select-Object -ExpandProperty DeviceId
-                if (!($null -eq $DriveLetters)) { 
+                if (!($null -eq $DriveLetters)) {
                   Write-host "New drives mounted $DriveLetters"
                 foreach ($DriveLetter in $DriveLetters) {
                     if (Test-Path "${DriveLetter}\windows\system32") {
@@ -124,7 +124,7 @@ if ($extension -Like "*.e01") {
                 Write-Host -ForegroundColor Yellow "============ VMDK Mount Successful" } break } } }
 Start-Sleep -Seconds 2
 
-####### PRESENT COLLECTION MENU 
+####### PRESENT COLLECTION MENU
 function Show-Menu
 {
     param (
@@ -161,18 +161,18 @@ Write-Host ""
 Start-Sleep -Seconds 2
 
 ####### EVIDENCE FOLDER CREATION
-$PathExists = Test-Path Evidence 
-    If ($PathExists -eq $false) { 
+$PathExists = Test-Path Evidence
+    If ($PathExists -eq $false) {
             mkdir Evidence | Out-Null }
     Set-Location Evidence
     $PathExists = Test-Path $imagefilename
-    If ($PathExists -eq $false) { 
+    If ($PathExists -eq $false) {
             mkdir $imagefilename | Out-Null }
     $PathExists = Test-Path $imagefilename\Modules
-        If ($PathExists -eq $false) { 
+        If ($PathExists -eq $false) {
             mkdir $imagefilename\Modules | Out-Null }
     $PathExists = Test-Path $imagefilename\Targets
-        If ($PathExists -eq $false) { 
+        If ($PathExists -eq $false) {
             mkdir $imagefilename\Targets | Out-Null }
     Set-Location ..
     Write-Host -ForegroundColor Yellow "============ Evidence Collection Folders Created"
@@ -182,24 +182,24 @@ $PathExists = Test-Path Evidence
     Write-Host ""
     Start-Sleep -Seconds 2
 
-####### Kape Execution
+####### KAPE Execution
 if ($selection -eq "1" -And $DriveLetter -match '[a-z]') {
-    Write-Host -ForegroundColor Yellow "============ Executing Kape for Workstation on $DriveLetter Drive"
+    Write-Host -ForegroundColor Yellow "============ Executing KAPE for Workstation on $DriveLetter Drive"
     Write-Host ""
-    Kape\kape.exe --ifw --tsource $DriveLetter --tdest Evidence\$imagefilename\Targets --target $kapeWorkstationTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\$imagefilename\Targets\$drive  --mdest Evidence\$imagefilename\Modules
+    KAPE\kape.exe --ifw --tsource $DriveLetter --tdest Evidence\$imagefilename\Targets --target $kapeWorkstationTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\$imagefilename\Targets\$drive  --mdest Evidence\$imagefilename\Modules
     }
 elseif ($selection -eq "2" -And $DriveLetter -match '[a-z]') {
-    Write-Host -ForegroundColor Yellow "============ Executing Kape for Server on $DriveLetter Drive"
+    Write-Host -ForegroundColor Yellow "============ Executing KAPE for Server on $DriveLetter Drive"
     Write-Host ""
-    Kape\kape.exe --ifw --tsource $DriveLetter --tdest Evidence\$imagefilename\Targets --target $kapeServerTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\$imagefilename\Targets\$drive --mdest Evidence\$imagefilename\Modules 
+    KAPE\kape.exe --ifw --tsource $DriveLetter --tdest Evidence\$imagefilename\Targets --target $kapeServerTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\$imagefilename\Targets\$drive --mdest Evidence\$imagefilename\Modules
     }
-else { 
+else {
     Write-Host -ForegroundColor Yellow "============ Error Please Start Again"
-Exit 
+Exit
     }
 
 ####### Y TERMINADO
-Write-Host -ForegroundColor Yellow "============ Kape Complete - Dismounting Image"
+Write-Host -ForegroundColor Yellow "============ KAPE Complete - Dismounting Image"
 Write-Host ""
 .\arsenal\aim_cli.exe /dismount /force
 Write-Host ""

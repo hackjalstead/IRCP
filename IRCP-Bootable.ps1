@@ -2,12 +2,12 @@
 
             Incident Response Collection Protocol (IRCP)
                         Bootable Version
-    ! Edit the Kape parsers below depending on investigational needs!
-    ! For multiple Kape parsers use a comma to seperate the values !
+    ! Edit the KAPE parsers below depending on investigational needs!
+    ! For multiple KAPE parsers use a comma to seperate the values !
 
 #######################################################################>
 
-####################### Kape Targets & Modules ########################
+####################### KAPE Targets & Modules ########################
 
                 $kapeWorkstationTargets = "!SANS_Triage"
                 $kapeServerTargets = "!SANS_Triage,ServerTriage"
@@ -19,15 +19,15 @@
 Start-Transcript .\ircpBootableConsole.log | out-null
 Clear-Host
 $ircp = "@
-                `$`$`$`$`$`$\ `$`$`$`$`$`$`$\   `$`$`$`$`$`$\  `$`$`$`$`$`$`$\  
-                \_`$`$  _|`$`$  __`$`$\ `$`$  __`$`$\ `$`$  __`$`$\ 
+                `$`$`$`$`$`$\ `$`$`$`$`$`$`$\   `$`$`$`$`$`$\  `$`$`$`$`$`$`$\
+                \_`$`$  _|`$`$  __`$`$\ `$`$  __`$`$\ `$`$  __`$`$\
                   `$`$ |  `$`$ |  `$`$ |`$`$ /  \__|`$`$ |  `$`$ |
                   `$`$ |  `$`$`$`$`$`$`$  |`$`$ |      `$`$`$`$`$`$`$  |
-                  `$`$ |  `$`$  __`$`$  `$`$ |      `$`$  ____/ 
-                  `$`$ |  `$`$ |  `$`$ |`$`$ |  `$`$\ `$`$ |      
-                `$`$`$`$`$`$\ `$`$ |  `$`$ |\`$`$`$`$`$`$  |`$`$ |      
-                \______|\__|  \__| \______/ \__|                                 
-@"      
+                  `$`$ |  `$`$  __`$`$  `$`$ |      `$`$  ____/
+                  `$`$ |  `$`$ |  `$`$ |`$`$ |  `$`$\ `$`$ |
+                `$`$`$`$`$`$\ `$`$ |  `$`$ |\`$`$`$`$`$`$  |`$`$ |
+                \______|\__|  \__| \______/ \__|
+@"
 Write-Host $ircp
 Write-Host -ForegroundColor Yellow "============ Incident Response Collection Protocol ============"
 Write-Host ""
@@ -67,11 +67,11 @@ $ComputerName = $hostNameRegex.value
 ####### CREATE COLLECTION DIRECTORIES
 Write-Host -ForegroundColor Yellow "==============================================================="
 
-$PathExists = Test-Path $dstDrive\Evidence 
+$PathExists = Test-Path $dstDrive\Evidence
 If ($PathExists -eq $false) {
     mkdir $dstDrive\Evidence | out-null }
 
-$PathExists = Test-Path $dstDrive\Evidence\$ComputerName 
+$PathExists = Test-Path $dstDrive\Evidence\$ComputerName
 If ($PathExists -eq $false) {
     mkdir $dstDrive\Evidence\$ComputerName | out-null }
 
@@ -109,16 +109,16 @@ elseif ($osInfo -eq 2 -Or 3) {
 
 ####### KAPE EXECUTION
 if ($osInfo -eq 1) {
-    Write-Host -ForegroundColor Yellow "============ Executing Kape for Workstation"
+    Write-Host -ForegroundColor Yellow "============ Executing KAPE for Workstation"
     Write-Host ""
     Start-Sleep -Seconds 1
     kape\kape.exe --tsource $srcDrive --tdest $dstDrive\Evidence\$ComputerName\Targets --target $kapeWorkstationTargets --zip $ComputerName --module $kapeModules,RECmd_BasicSystemInfo --mdest $dstDrive\Evidence\$ComputerName\Modules
     }
 elseif ($osInfo -eq 2 -Or 3) {
-    Write-Host -ForegroundColor Yellow "============ Executing Kape for Server"
+    Write-Host -ForegroundColor Yellow "============ Executing KAPE for Server"
     Write-Host ""
     Start-Sleep -Seconds 1
-    kape\kape.exe --tsource $srcDrive --tdest $dstDrive\Evidence\$ComputerName\Targets --target $kapeServerTargets --zip $ComputerName --module $kapeModules,RECmd_BasicSystemInfo --msource --mdest $dstDrive\Evidence\$ComputerName\Modules 
+    kape\kape.exe --tsource $srcDrive --tdest $dstDrive\Evidence\$ComputerName\Targets --target $kapeServerTargets --zip $ComputerName --module $kapeModules,RECmd_BasicSystemInfo --msource --mdest $dstDrive\Evidence\$ComputerName\Modules
     }
 else {
     Write-Host -ForegroundColor Yellow "============ Error Please Start Again"
@@ -132,5 +132,5 @@ Stop-Transcript | out-null
 Move-Item -Path $dstDrive\Evidence\$ComputerName\Modules\Registry\*_BasicSystemInfo_Output.csv $dstDrive\Evidence\$ComputerName\TargetSystemInfo.csv
 Move-Item -Path $dstDrive\Evidence\$ComputerName\Modules\*.txt -Destination $dstDrive\Evidence\$ComputerName\kapeModules.log
 Move-Item -Path $dstDrive\Evidence\$ComputerName\Targets\*.txt -Destination $dstDrive\Evidence\$ComputerName\kapeTargets.log
-Move-Item -Path .\ircpBootableConsole.log -Destination $dstDrive\Evidence\$ComputerName\ircpBootableConsole.log 
+Move-Item -Path .\ircpBootableConsole.log -Destination $dstDrive\Evidence\$ComputerName\ircpBootableConsole.log
 Pause

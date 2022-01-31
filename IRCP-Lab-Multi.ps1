@@ -2,12 +2,12 @@
 
             Incident Response Collection Protocol (IRCP)
                         Multi-Image Version
-    ! Edit the Kape parsers below depending on investigational needs!
-    ! For multiple Kape parsers use a comma to seperate the values !
+    ! Edit the KAPE parsers below depending on investigational needs!
+    ! For multiple KAPE parsers use a comma to seperate the values !
 
 #######################################################################>
 
-####################### Kape Targets & Modules ########################
+####################### KAPE Targets & Modules ########################
 
                     $kapeTargets = "!SANS_Triage"
                     $kapeModules = "!EZParser,Chainsaw"
@@ -18,15 +18,15 @@
 Start-Transcript .\ircpMultiConsole.log | out-null
 Clear-Host
 $ircp = "@
-                `$`$`$`$`$`$\ `$`$`$`$`$`$`$\   `$`$`$`$`$`$\  `$`$`$`$`$`$`$\  
-                \_`$`$  _|`$`$  __`$`$\ `$`$  __`$`$\ `$`$  __`$`$\ 
+                `$`$`$`$`$`$\ `$`$`$`$`$`$`$\   `$`$`$`$`$`$\  `$`$`$`$`$`$`$\
+                \_`$`$  _|`$`$  __`$`$\ `$`$  __`$`$\ `$`$  __`$`$\
                   `$`$ |  `$`$ |  `$`$ |`$`$ /  \__|`$`$ |  `$`$ |
                   `$`$ |  `$`$`$`$`$`$`$  |`$`$ |      `$`$`$`$`$`$`$  |
-                  `$`$ |  `$`$  __`$`$  `$`$ |      `$`$  ____/ 
-                  `$`$ |  `$`$ |  `$`$ |`$`$ |  `$`$\ `$`$ |      
-                `$`$`$`$`$`$\ `$`$ |  `$`$ |\`$`$`$`$`$`$  |`$`$ |      
-                \______|\__|  \__| \______/ \__|                                 
-@"      
+                  `$`$ |  `$`$  __`$`$  `$`$ |      `$`$  ____/
+                  `$`$ |  `$`$ |  `$`$ |`$`$ |  `$`$\ `$`$ |
+                `$`$`$`$`$`$\ `$`$ |  `$`$ |\`$`$`$`$`$`$  |`$`$ |
+                \______|\__|  \__| \______/ \__|
+@"
 Write-Host $ircp
 Write-Host -ForegroundColor Yellow "============ Incident Response Collection Protocol ============"
 Write-Host ""
@@ -52,7 +52,7 @@ Start-Sleep -Seconds 1
 Write-Host -ForegroundColor Yellow "============ Searching $targetDrives for Images"
 
 ####### E01 LOGIC
-foreach ($e01 in $e01Images) 
+foreach ($e01 in $e01Images)
 {
     $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
     $DriveLetter = $null
@@ -60,18 +60,18 @@ foreach ($e01 in $e01Images)
     Write-Host "Found Image - $($e01.basename)"
     Write-Host ""
     Start-Sleep -Seconds 1
-    $PathExists = Test-Path Evidence 
-    If ($PathExists -eq $false) { 
+    $PathExists = Test-Path Evidence
+    If ($PathExists -eq $false) {
             mkdir Evidence | Out-Null }
     Set-Location Evidence
     $PathExists = Test-Path $e01.basename
-    If ($PathExists -eq $false) { 
+    If ($PathExists -eq $false) {
             mkdir $e01.basename | Out-Null }
     $PathExists = Test-Path "$($e01.basename)\Modules"
-        If ($PathExists -eq $false) { 
+        If ($PathExists -eq $false) {
             mkdir "$($e01.basename)\Modules" | Out-Null }
     $PathExists = Test-Path "$($e01.basename)\Targets"
-        If ($PathExists -eq $false) { 
+        If ($PathExists -eq $false) {
             mkdir "$($e01.basename)\Targets" | Out-Null }
     Set-Location ..
     Write-Host -ForegroundColor Yellow "============ Evidence Collection Folders Created"
@@ -90,27 +90,27 @@ if ($e01 -Like "*.e01")
 :e01 while($true)
     {
         $DrivesCountNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
-        if ($DrivesCount -ne $DrivesCountNew) 
+        if ($DrivesCount -ne $DrivesCountNew)
         {
             $DrivesNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk")
             $DriveLetter = Compare-Object -ReferenceObject $Drives -DifferenceObject $DrivesNew | Select-Object -ExpandProperty InputObject | Select-Object -ExpandProperty DeviceId
             if (!($null -eq $DriveLetter))
-                { 
+                {
                     Write-host "Image mounted as $DriveLetter"
-                    foreach ($OSDriveLetter in $DriveLetter) 
+                    foreach ($OSDriveLetter in $DriveLetter)
                         {
-                            if (Test-Path "${OSDriveLetter}\windows\system32") 
+                            if (Test-Path "${OSDriveLetter}\windows\system32")
                                 {
                                     Write-Host "Operating System Drive is ${OSDriveLetter}"
-                                    Write-Host "" 
+                                    Write-Host ""
                                 }
                         }
                 }
-            $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count 
-        Write-Host -ForegroundColor Yellow "============ Executing Kape on $OSDriveLetter Drive for $($e01.basename)"
+            $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
+        Write-Host -ForegroundColor Yellow "============ Executing KAPE on $OSDriveLetter Drive for $($e01.basename)"
         Write-Host ""
-        Kape\kape.exe --ifw --tsource $OSDriveLetter --tdest Evidence\"$($e01.basename)"\Targets --target $kapeTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\"$($e01.basename)"\Targets\$drive  --mdest Evidence\"$($e01.basename)"\Modules
-        Write-Host -ForegroundColor Yellow "============ Kape Completed on $OSDriveLetter Drive for $($e01.basename)"
+        KAPE\kape.exe --ifw --tsource $OSDriveLetter --tdest Evidence\"$($e01.basename)"\Targets --target $kapeTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\"$($e01.basename)"\Targets\$drive  --mdest Evidence\"$($e01.basename)"\Modules
+        Write-Host -ForegroundColor Yellow "============ KAPE Completed on $OSDriveLetter Drive for $($e01.basename)"
         Write-Host ""
         .\arsenal\aim_cli.exe /dismount /force
         Write-Host ""
@@ -122,12 +122,12 @@ if ($e01 -Like "*.e01")
         Move-Item -Path .\Evidence\$($e01.basename)\Targets\*.txt -Destination .\Evidence\$($e01.basename)\kapeTargets.log
         Start-Sleep -Seconds 5
         break
-        }            
-    }   
-} 
+        }
+    }
+}
 
 ####### VMDK LOGIC
-foreach ($vmdk in $vmdkImages)  
+foreach ($vmdk in $vmdkImages)
 {
     $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
     $DriveLetter = $null
@@ -137,18 +137,18 @@ foreach ($vmdk in $vmdkImages)
     Start-Sleep -Seconds 1
     if ($vmdk -Like "*.vmdk" -And $vmdk.length -lt 3000)
 {
-        $PathExists = Test-Path Evidence 
-        If ($PathExists -eq $false) { 
+        $PathExists = Test-Path Evidence
+        If ($PathExists -eq $false) {
                 mkdir Evidence | Out-Null }
         Set-Location Evidence
         $PathExists = Test-Path $($vmdk.basename)
-        If ($PathExists -eq $false) { 
+        If ($PathExists -eq $false) {
                 mkdir $vmdk.basename | Out-Null }
         $PathExists = Test-Path "$($vmdk.basename)\Modules"
-            If ($PathExists -eq $false) { 
+            If ($PathExists -eq $false) {
                 mkdir "$($vmdk.basename)\Modules" | Out-Null }
         $PathExists = Test-Path "$($vmdk.basename)\Targets"
-            If ($PathExists -eq $false) { 
+            If ($PathExists -eq $false) {
                 mkdir "$($vmdk.basename)\Targets" | Out-Null }
         Set-Location ..
         Start-Sleep -Seconds 2
@@ -164,30 +164,30 @@ foreach ($vmdk in $vmdkImages)
         .\arsenal\aim_cli.exe /mount /readonly /filename=$vmdk /provider=DiscUtils /background
         Start-Sleep -Seconds 5
 }
-:vmdk while($vmdk -Like "*.vmdk" -And $vmdk.length -lt 3000) 
+:vmdk while($vmdk -Like "*.vmdk" -And $vmdk.length -lt 3000)
     {
         $DrivesCountNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
-        if ($DrivesCount -ne $DrivesCountNew) 
+        if ($DrivesCount -ne $DrivesCountNew)
         {
             $DrivesNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk")
             $DriveLetter = Compare-Object -ReferenceObject $Drives -DifferenceObject $DrivesNew | Select-Object -ExpandProperty InputObject | Select-Object -ExpandProperty DeviceId
-            if (!($null -eq $DriveLetter)) 
+            if (!($null -eq $DriveLetter))
                 {
                     Write-host "Image mounted as $DriveLetter"
-                    foreach ($OSDriveLetter in $DriveLetter) 
+                    foreach ($OSDriveLetter in $DriveLetter)
                     {
-                        if (Test-Path "${OSDriveLetter}\windows\system32") 
+                        if (Test-Path "${OSDriveLetter}\windows\system32")
                             {
                                 Write-Host "Operating System Drive is ${OSDriveLetter} Drive"
-                                Write-Host "" 
+                                Write-Host ""
                             }
                     }
-                } 
+                }
         $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
-        Write-Host -ForegroundColor Yellow "============ Executing Kape on $OSDriveLetter Drive for $($vmdk.basename)"
+        Write-Host -ForegroundColor Yellow "============ Executing KAPE on $OSDriveLetter Drive for $($vmdk.basename)"
         Write-Host ""
-        Kape\kape.exe --ifw --tsource $OSDriveLetter --tdest Evidence\"$($vmdk.basename)"\Targets --target $kapeTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\"$($vmdk.basename)"\Targets\$drive  --mdest Evidence\"$($vmdk.basename)"\Modules
-        Write-Host -ForegroundColor Yellow "============ Kape Complete on $OSD Drive for $($vmdk.basename)"
+        KAPE\kape.exe --ifw --tsource $OSDriveLetter --tdest Evidence\"$($vmdk.basename)"\Targets --target $kapeTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\"$($vmdk.basename)"\Targets\$drive  --mdest Evidence\"$($vmdk.basename)"\Modules
+        Write-Host -ForegroundColor Yellow "============ KAPE Complete on $OSD Drive for $($vmdk.basename)"
         Write-Host ""
         .\arsenal\aim_cli.exe /dismount /force
         Write-Host ""
@@ -204,7 +204,7 @@ foreach ($vmdk in $vmdkImages)
 }
 
 ####### VHD LOGIC
-foreach ($vhd in $vhdImages) 
+foreach ($vhd in $vhdImages)
 {
     $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
     $DriveLetter = $null
@@ -212,18 +212,18 @@ foreach ($vhd in $vhdImages)
     Write-Host "Found Image - $($vhd.basename)"
     Write-Host ""
     Start-Sleep -Seconds 1
-    $PathExists = Test-Path Evidence 
-    If ($PathExists -eq $false) { 
+    $PathExists = Test-Path Evidence
+    If ($PathExists -eq $false) {
         mkdir Evidence | Out-Null }
-    Set-Location Evidence 
+    Set-Location Evidence
     $PathExists = Test-Path $vhd.basename
-    If ($PathExists -eq $false) { 
+    If ($PathExists -eq $false) {
         mkdir $vhd.basename | Out-Null }
     $PathExists = Test-Path "$($vhd.basename)\Modules"
-    If ($PathExists -eq $false) { 
+    If ($PathExists -eq $false) {
         mkdir "$($vhd.basename)\Modules" | Out-Null}
     $PathExists = Test-Path "$($vhd.basename)\Targets"
-        If ($PathExists -eq $false) { 
+        If ($PathExists -eq $false) {
             mkdir "$($vhd.basename)\Targets" | Out-Null}
     Set-Location ..
     Write-Host -ForegroundColor Yellow "============ Evidence Collection Folders Created"
@@ -233,54 +233,54 @@ foreach ($vhd in $vhdImages)
     Write-Host ""
     Start-Sleep -Seconds 1
 
-    if ($vhd -Like "*.vhd") 
+    if ($vhd -Like "*.vhd")
 {
     Write-Host -ForegroundColor Yellow "============ Mounting VHD Image"
     Write-Host ""
     .\arsenal\aim_cli.exe /mount /readonly /filename=$vhd /provider=DiscUtils /background
 }
-:vhd while($true) 
+:vhd while($true)
     {
         $DrivesCountNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
-        if ($DrivesCount -ne $DrivesCountNew) 
+        if ($DrivesCount -ne $DrivesCountNew)
         {
             $DrivesNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk")
             $DriveLetter = Compare-Object -ReferenceObject $Drives -DifferenceObject $DrivesNew | Select-Object -ExpandProperty InputObject | Select-Object -ExpandProperty DeviceId
-            if (!($null -eq $DriveLetter)) 
-                { 
+            if (!($null -eq $DriveLetter))
+                {
                     Write-host "Image mounted as $DriveLetter"
-                    foreach ($OSDriveLetter in $DriveLetter) 
+                    foreach ($OSDriveLetter in $DriveLetter)
                         {
-                            if (Test-Path "${OSDriveLetter}\windows\system32") 
+                            if (Test-Path "${OSDriveLetter}\windows\system32")
                                 {
                                     Write-Host "Operating System Drive is ${OSDriveLetter}"
-                                    Write-Host "" 
+                                    Write-Host ""
                                 }
                         }
-                } 
+                }
         $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
-        Write-Host -ForegroundColor Yellow "============ Executing Kape on $OSDriveLetter Drive for $($vhd.basename)"
+        Write-Host -ForegroundColor Yellow "============ Executing KAPE on $OSDriveLetter Drive for $($vhd.basename)"
         Write-Host ""
-        Kape\kape.exe --ifw --tsource $OSDriveLetter --tdest Evidence\"$($vhd.basename)"\Targets --target $kapeTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\"$($vhd.basename)"\Targets\$drive  --mdest Evidence\"$($vhd.basename)"\Modules
-        Write-Host -ForegroundColor Yellow "============ Kape Completed on $OSDriveLetter Drive for $($vhd.basename)"
+        KAPE\kape.exe --ifw --tsource $OSDriveLetter --tdest Evidence\"$($vhd.basename)"\Targets --target $kapeTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\"$($vhd.basename)"\Targets\$drive  --mdest Evidence\"$($vhd.basename)"\Modules
+        Write-Host -ForegroundColor Yellow "============ KAPE Completed on $OSDriveLetter Drive for $($vhd.basename)"
         Write-Host ""
         .\arsenal\aim_cli.exe /dismount /force
         Write-Host ""
         Write-Host -ForegroundColor Yellow "============ $OSDriveLetter Drive Dismounted"
         Write-Host ""
-        Write-Host -ForegroundColor Yellow "============ Kape Complete on $OSDriveLetter Drive for $($vhd.basename)"
+        Write-Host -ForegroundColor Yellow "============ KAPE Complete on $OSDriveLetter Drive for $($vhd.basename)"
         Move-Item -Path .\Evidence\$($vhd.basename)\Modules\Registry\*_BasicSystemInfo_Output.csv .\Evidence\$($vhd.basename)\TargetSystemInfo.csv
         Move-Item -Path .\Evidence\$($vhd.basename)\Modules\*.txt -Destination .\Evidence\$($vhd.basename)\kapeModules.log
         Move-Item -Path .\Evidence\$($vhd.basename)\Targets\*.txt -Destination .\Evidence\$($vhd.basename)\kapeTargets.log
         Start-Sleep -Seconds 5
         break
         }
-                    
-    }   
-} 
+
+    }
+}
 
 ####### VHDX LOGIC
-foreach ($vhdx in $vhdxImages) 
+foreach ($vhdx in $vhdxImages)
 {
     $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
     $DriveLetter = $null
@@ -288,18 +288,18 @@ foreach ($vhdx in $vhdxImages)
     Write-Host "Found Image - $($vhdx.basename)"
     Write-Host ""
     Start-Sleep -Seconds 1
-    $PathExists = Test-Path Evidence 
-    If ($PathExists -eq $false) { 
+    $PathExists = Test-Path Evidence
+    If ($PathExists -eq $false) {
         mkdir Evidence | Out-Null }
-    Set-Location Evidence 
+    Set-Location Evidence
     $PathExists = Test-Path $($vhdx.basename)
-    If ($PathExists -eq $false) { 
+    If ($PathExists -eq $false) {
         mkdir \$($vhdx.basename) | Out-Null }
-    $PathExists = Test-Path "$($vhdx.basename)\Modules" 
-    If ($PathExists -eq $false) { 
+    $PathExists = Test-Path "$($vhdx.basename)\Modules"
+    If ($PathExists -eq $false) {
         mkdir "$($vhdx.basename)\Modules" | Out-Null}
     $PathExists = Test-Path "$($vhdx.basename)\Targets"
-        If ($PathExists -eq $false) { 
+        If ($PathExists -eq $false) {
             mkdir "$($vhdx.basename)\Targets" | Out-Null}
     Set-Location ..
     Write-Host -ForegroundColor Yellow "============ Evidence Collection Folders Created"
@@ -308,49 +308,49 @@ foreach ($vhdx in $vhdxImages)
     Write-Host -ForegroundColor Yellow "============ .\Evidence\$($vhdx.basename)\Modules"
     Write-Host ""
     Start-Sleep -Seconds 1
-    if ($vhdx -Like "*.vhdx") 
+    if ($vhdx -Like "*.vhdx")
 {
     Write-Host -ForegroundColor Yellow "============ Mounting VHDX Image"
     Write-Host ""
     .\arsenal\aim_cli.exe /mount /readonly /filename=$vhdx /provider=DiscUtils /background
 }
-:vhdx while($true) 
+:vhdx while($true)
     {
         $DrivesCountNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
-        if ($DrivesCount -ne $DrivesCountNew) 
+        if ($DrivesCount -ne $DrivesCountNew)
         {
             $DrivesNew = (Get-WmiObject -Query "Select * from Win32_LogicalDisk")
             $DriveLetter = Compare-Object -ReferenceObject $Drives -DifferenceObject $DrivesNew | Select-Object -ExpandProperty InputObject | Select-Object -ExpandProperty DeviceId
-            if (!($null -eq $DriveLetter)) 
-                { 
+            if (!($null -eq $DriveLetter))
+                {
                     Write-host "Image mounted as $DriveLetter"
-                    foreach ($OSDriveLetter in $DriveLetter) 
+                    foreach ($OSDriveLetter in $DriveLetter)
                         {
-                            if (Test-Path "${OSDriveLetter}\windows\system32") 
+                            if (Test-Path "${OSDriveLetter}\windows\system32")
                                 {
                                     Write-Host "Operating System Drive is ${OSDriveLetter}"
-                                    Write-Host "" 
+                                    Write-Host ""
                                 }
                         }
-                } 
+                }
         $DrivesCount = (Get-WmiObject -Query "Select * from Win32_LogicalDisk").Count
-        Write-Host -ForegroundColor Yellow "============ Executing Kape on $OSDriveLetter Drive for $($vhdx.basename)"
+        Write-Host -ForegroundColor Yellow "============ Executing KAPE on $OSDriveLetter Drive for $($vhdx.basename)"
         Write-Host ""
-        Kape\kape.exe --ifw --tsource $OSDriveLetter --tdest Evidence\"$($vhdx.basename)"\Targets --target $kapeTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\"$($vhdx.basename)"\Targets\$drive  --mdest Evidence\"$($vhdx.basename)"\Modules
-        Write-Host -ForegroundColor Yellow "============ Kape Completed on $OSDriveLetter Drive for $($vhdx.basename)"
+        KAPE\kape.exe --ifw --tsource $OSDriveLetter --tdest Evidence\"$($vhdx.basename)"\Targets --target $kapeTargets --zip target --module $kapeModules,RECmd_BasicSystemInfo --msource Evidence\"$($vhdx.basename)"\Targets\$drive  --mdest Evidence\"$($vhdx.basename)"\Modules
+        Write-Host -ForegroundColor Yellow "============ KAPE Completed on $OSDriveLetter Drive for $($vhdx.basename)"
         Write-Host ""
         .\arsenal\aim_cli.exe /dismount /force
         Write-Host ""
         Write-Host -ForegroundColor Yellow "============ $OSDriveLetter Dismounted"
         Write-Host ""
-        Write-Host -ForegroundColor Yellow "============ Kape Complete on $OSDriveLetter Drive for $($vhdx.basename)"
+        Write-Host -ForegroundColor Yellow "============ KAPE Complete on $OSDriveLetter Drive for $($vhdx.basename)"
         Move-Item -Path .\Evidence\$($vhdx.basename)\Modules\Registry\*_BasicSystemInfo_Output.csv .\Evidence\$($vhdx.basename)\TargetSystemInfo.csv
         Move-Item -Path .\Evidence\$($vhdx.basename)\Modules\*.txt -Destination .\Evidence\$($vhdx.basename)\kapeModules.log
         Move-Item -Path .\Evidence\$($vhdx.basename)\Targets\*.txt -Destination .\Evidence\$($vhdx.basename)\kapeTargets.log
         Start-Sleep -Seconds 5
         break
-        }             
-    }   
+        }
+    }
 }
 ####### TRANSCRIPT AUDIT
 Stop-Transcript | Out-Null
